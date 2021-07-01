@@ -1,0 +1,157 @@
+version: "3.8"
+
+services:
+  router:
+    container_name: router
+    image: ghcr.io/connext/nxtp-router:$ROUTER_VERSION
+    restart: always
+    ports:
+      - $ROUTER_EXTERNAL_PORT:8000
+    volumes:
+      - ./config.json:/home/node/router/config.json
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  ################################################################################
+
+  dd-agent:
+    container_name: dd-agent
+    image: gcr.io/datadoghq/agent:7
+    restart: always
+    environment:
+      DD_SITE: "datadoghq.com"
+      DD_API_KEY: $DATADOG_KEY
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  ################################################################################
+
+  logdna:
+    container_name: logdna
+    image: logdna/logspout:v1.2.0
+    restart: always
+    environment:
+      LOGDNA_KEY: $LOGDNA_KEY
+      TAGS: $LOGDNA_TAG
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  ################################################################################
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: always
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=45d
+    volumes:
+      - ./data/prometheusConfig/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./data/prometheusConfig/alert.rules.host:/etc/prometheus/alert.rules.host
+      - ./data/prometheusConfig/alert.rules.prod:/etc/prometheus/alert.rules.prod
+      # - ./data/prometheusConfig/alert.rules.router:/etc/prometheus/alert.rules.router
+      - prometheus:/prometheus
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - $GRAFANA_EXTERNAL_PORT:3000
+    volumes:
+      - ./data/grafanaConfig/grafana:/etc/grafana
+      - ./data/grafanaConfig/dashboards:/etc/dashboards
+      - grafana:/var/lib/grafana
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  #  alertmanager-discord:
+  #    container_name: alertmanager-discord
+  #    image: benjojo/alertmanager-discord
+  #    restart: always
+  #    environment:
+  #      DISCORD_WEBHOOK: $DISCORD_WEBHOOK
+  #    logging:
+  #      driver: json-file
+  #      options:
+  #          max-size: 10m
+  #    networks:
+  #      - nxtp
+
+  ################################################################################
+
+  node-exporter:
+    container_name: node-exporter
+    image: prom/node-exporter:v1.1.2
+    restart: always
+    command:
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --path.rootfs=/rootfs
+      - --collector.filesystem.ignored-mount-points
+      - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns)(/)
+    cap_add:
+      - SYS_TIME
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:v0.39.0
+    restart: always
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+################################################################################
+
+networks:
+  nxtp:
+
+volumes:
+  prometheus:
+  grafana:

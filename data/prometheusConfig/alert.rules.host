@@ -1,0 +1,238 @@
+groups:
+- name: targets
+  rules:
+  - alert: monitor_service_down
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Endpoint {{ $labels.instance }} down"
+      description: "Service {{ $labels.instance }} is down has been down for more than 1 minutes."
+
+- name: host
+  rules:
+#  - alert: high_cpu_load
+#    expr: node_load1 > 1.5
+#    for: 30s
+#    labels:
+#      severity: warning
+#    annotations:
+#      summary: "Instance {{ $labels.instance }} under high load"
+#      description: "Docker host is under high load, the avg load 1m is at {{ $value}}."
+
+### Storage alerts
+  - alert: node_filesystem_full_85percent
+    expr: (node_filesystem_size_bytes{fstype="ext4",device=~"/dev/sd.*"} - node_filesystem_free_bytes{fstype="ext4",device=~"/dev/sd.*"}) / node_filesystem_size_bytes{fstype="ext4",device=~"/dev/sd.*"} * 100 > 85
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      description: 'Device {{$labels.device}} on {{$labels.mountpoint}} got less than {{ humanize $value }}% space left on its filesystem.'
+      summary: '{{$labels.server}}: Device {{$labels.device}} is running out of space soon.'
+#  - alert: node_filesystem_full_in_3h
+#    expr: predict_linear(node_filesystem_free{fstype="ext4",device=~"/dev/xvd.*",mountpoint!="/rootfs/var/lib/kubelet",mountpoint!="/rootfs/var/lib/rancher/volumes"}[1h], 3 * 3600) <= 0
+#    for: 5m
+#    labels:
+#      severity: warning
+#    annotations:
+#      description: 'Based on recent sampling, the disk is likely to will fill on device {{$labels.device}} ({{$labels.mountpoint}}) within the next 3 hours'
+#      summary: '{{$labels.server}}: Filesystem will be running out of space in 3 hours.'
+  - alert: node_high_storage_load
+    expr: (node_filesystem_size_bytes{fstype="ext4",device=~"/dev/sd.*"} - node_filesystem_free_bytes{fstype="ext4",device=~"/dev/sd.*"}) / node_filesystem_size_bytes{fstype="ext4",device=~"/dev/sd.*"} * 100 > 90
+    for: 30s
+    labels:
+      severity: critical
+    annotations:
+      description: 'Device {{$labels.device}} on {{$labels.mountpoint}} usage is {{ humanize $value }}%.'
+      summary: '{{$labels.server}}: Device {{$labels.device}} is almost full'
+
+### Disk alerts
+  - alert: node_disk_read_latency
+    expr: (rate(node_disk_read_time_seconds_total[5m]) / rate(node_disk_reads_completed_total[5m])) > 20
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      description: 'Device {{$labels.device}} has a high read latency of {{ $value }}'
+      summary: '{{$labels.server}}: High read latency observed for device {{ $labels.device }}'
+  - alert: node_disk_write_latency
+    expr: (rate(node_disk_write_time_seconds_total[5m]) / rate(node_disk_writes_completed_total[5m])) > 60
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      description: 'Device {{$labels.device}} has a high write latency of {{ $value }}'
+      summary: '{{$labels.server}}: High write latency observed for device {{ $labels.device }}'
+  - alert: node_inodes_20percent
+    expr: node_filesystem_files_free{fstype="ext4",mountpoint="/"} / node_filesystem_files{fstype="ext4",mountpoint="/"} * 100 < 20
+    for: 10m
+    labels:
+      severity: critical
+    annotations:
+      description: '{{$labels.server}} server has less than 20% inodes'
+      summary: '{{$labels.server}}: low inodes. Less than 20% inodes'
+  - alert: node_filedescriptors_full_in_3h
+    expr: predict_linear(node_filefd_allocated[1h], 3 * 3600) >= node_filefd_maximum
+    for: 20m
+    labels:
+      severity: critical
+    annotations:
+      description: '{{$labels.server}} server is running out of available file descriptors in approx. 3 hours'
+      summary: '{{$labels.server}}: out of available file descriptors.'
+
+### Ram memory alerts
+  - alert: node_ram_using_80percent
+    expr: (sum(node_memory_MemTotal_bytes) by (server) - sum(node_memory_MemAvailable_bytes) by (server)) / sum(node_memory_MemTotal_bytes) by (server) * 100 > 80
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}}: server is using at least 80% of its RAM for at least 10 minutes now.'
+      summary: '{{$labels.server}}: Server using lots of RAM.'
+  - alert: node_high_memory_load
+    expr: (sum(node_memory_MemTotal_bytes) by (server) - sum(node_memory_MemAvailable_bytes) by (server)) / sum(node_memory_MemTotal_bytes) by (server) * 100 > 85
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      description: '{{$labels.server}}: server is using at least 85% of its RAM.'
+      summary: '{{$labels.server}}: Server memory is almost full'
+
+### CPU alerts
+  - alert: node_cpu_utilization
+    expr: 100 - (avg by(server) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 50
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has total CPU utilization over 50% for at least 10m. Current CPU Utilization: {{ $value }}%'
+      summary: '{{$labels.server}}: High CPU Utilization'
+  - alert: node_cpu_util_75percent
+    expr: 100 - (avg by(server) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) >= 75
+    for: 1h
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has total CPU utilization over 75% for at least 1h. Current CPU Utilization: {{ $value }}%'
+      summary: '{{$labels.server}}: High CPU utilization.'
+
+### Server load alerts
+  - alert: node_load1_50percent
+    expr: node_load1 / ON(server) count(node_cpu_seconds_total{mode="system"}) BY (server) >= 0.5
+    for: 1h
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server is running with > 50% total load for at least 1h.'
+      summary: '{{$labels.server}}: Running on high load.'
+  - alert: node_load1_75percent
+    expr: node_load1 / ON(server) count(node_cpu_seconds_total{mode="system"}) BY (server) >= 0.75
+    for: 1h
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server is running with > 75% total load for at least 1h.'
+      summary: '{{$labels.server}}: Running on high load.'
+  - alert: node_load5_75percent
+    expr: node_load5 / on(server) count(node_cpu_seconds_total{mode="system"}) by (server) >= 0.75
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server is running with > 75% total load for at least 5 minutes.'
+      summary: '{{$labels.server}}: Running on high load for at least 5 minutes'
+  - alert: node_load15_50percent
+    expr: node_load15 / on(server) count(node_cpu_seconds_total{mode="system"}) by (server) >= 0.5
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server is running with > 50% total load for at least 15 minutes.'
+      summary: '{{$labels.server}}: Running on high load for at least 15 minutes'
+
+### Swap memory alerts
+  - alert: node_swap_using_80percent
+    expr: node_memory_SwapTotal_bytes - (node_memory_SwapFree_bytes + node_memory_SwapCached_bytes) > node_memory_SwapTotal_bytes * 0.8
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server is using 80% of its swap space for at least 10 minutes.'
+      summary: '{{$labels.server}}: Running out of swap soon.'
+#  - alert: node_high_swap
+#    expr: (node_memory_SwapTotal - node_memory_SwapFree) < (node_memory_SwapTotal * 0.6)
+#    for: 1m
+#    labels:
+#      severity: warning
+#    annotations:
+#      description: {{$labels.server}} server has a high swap usage of {{ humanize $value }}.
+#      summary: {{$labels.server}}: has a high swap usage
+
+### Network rules
+  - alert: node_high_network_drop_rcv
+    expr: node_network_receive_drop_total{device!="lo"} > 3000
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has an unusally high drop in network reception ({{ humanize $value }}) on device {{$labels.device}}.'
+      summary: '{{$labels.server}}: has a high receive drop on device {{$labels.device}}'
+  - alert: node_high_network_drop_send
+    expr: node_network_transmit_drop_total{device!="lo"} > 3000
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has an unusally high drop in network transmission ({{ humanize $value }}) on device {{$labels.device}}.'
+      summary: '{{$labels.server}}: has a high transmit drop on device {{$labels.device}}'
+  - alert: node_high_network_errs_rcv
+    expr: node_network_receive_errs_total{device!="lo"} > 3000
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has an unusally high error rate in network reception ({{ humanize $value }}) on device {{$labels.device}}.'
+      summary: '{{$labels.server}}: has unusual high reception errors on device {{$labels.device}}'
+  - alert: node_high_network_errs_send
+    expr: node_network_transmit_errs_total{device!="lo"} > 3000
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has an unusally high error rate in network transmission ({{ humanize $value }}) on device {{$labels.device}}.'
+      summary: '{{$labels.server}}: has unusual high transmission errors'
+  - alert: node_network_conntrack_usage_80percent
+    expr: sort(node_nf_conntrack_entries > node_nf_conntrack_entries_limit * 0.8)
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has network conntrack entries of {{ $value }} which is more than 80% of maximum limit'
+      summary: '{{$labels.server}}: available network conntrack entries are low.'
+
+###
+  - alert: node_entropy_available_low
+    expr: node_entropy_available_bits < 300
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has available entropy bits of {{ $value }} which is less than required of 300'
+      summary: '{{$labels.server}}: is low on entropy bits.'
+  - alert: node_vmstat_paging_rate_high
+    expr: irate(node_vmstat_pgpgin[5m]) > 80
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      description: '{{$labels.server}} server has a memory paging rate of change higher than 80%: {{$value}}'
+      summary: '{{$labels.server}}: memory paging rate is high: {{$value}}'
+#    - alert: node_ntp_clock_skew_high
+#      expr: abs(node_ntp_drift_seconds) > 2
+#      for: 5m
+#      labels:
+#        severity: warning
+#      annotations:
+#        description: '{{$labels.server}} has time difference of more than 2 seconds compared to NTP server: {{ $value }}'
+#        summary: '{{$labels.server}}: time is skewed by : {{$value}} seconds'

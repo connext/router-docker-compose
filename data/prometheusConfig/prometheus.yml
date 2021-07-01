@@ -1,0 +1,37 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  external_labels:
+      monitor: 'exporter-metrics'
+
+rule_files:
+  - 'alert.rules.host'
+  - 'alert.rules.prod'
+
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets: ["alertmanager:9093"]
+
+scrape_configs:
+
+- job_name: 'production'
+  scrape_interval: 15s
+  scrape_timeout: 15s
+  static_configs:
+    - targets:
+      - '127.0.0.1:9090'
+      labels:
+        server: PRODUCTION
+    - targets:
+      - 'cadvisor:8080'
+      labels:
+        server: PRODUCTION
+    - targets:
+      - 'node-exporter:9100'
+      labels:
+        server: PRODUCTION
+    - targets:
+      - 'router:8000'
+      labels:
+        server: PRODUCTION
