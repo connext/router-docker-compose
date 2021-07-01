@@ -1,0 +1,33 @@
+name: NXTP to Testnet
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  HOST: ${{ secrets.HOST_TESTNET }}
+  PORT: ${{ secrets.PORT_TESTNET }}
+  USERNAME: ${{ secrets.USERNAME_TESTNET }}
+  KEY: ${{ secrets.SSHKEY_TESTNET }}
+
+jobs:
+
+  deploy:
+    name: Deploy to Testnet
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set tag
+      id: vars
+      run: |
+        echo "IMAGE_TAG=`head -1 latestVersion`" >> $GITHUB_ENV
+    - name: Run deploy script
+      uses: appleboy/ssh-action@master
+      with:
+        HOST: ${HOST}
+        PORT: ${PORT}
+        USERNAME: ${USERNAME}
+        KEY: ${SSHKEY}
+        script: deploy_nxtp ${IMAGE_TAG}

@@ -6,7 +6,7 @@ services:
     image: ghcr.io/connext/nxtp-router:$ROUTER_VERSION
     restart: always
     ports:
-      - $ROUTER_EXTERNAL_PORT:8000
+      - $ROUTER_EXTERNAL_PORT:8080
     volumes:
       - ./config.json:/home/node/router/config.json
     logging:
