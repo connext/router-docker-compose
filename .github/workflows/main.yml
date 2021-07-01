@@ -16,7 +16,6 @@ jobs:
   deploy:
     name: Deploy to Testnet
     runs-on: ubuntu-latest
-    needs: build
     steps:
     - uses: actions/checkout@v2
     - name: Set tag
