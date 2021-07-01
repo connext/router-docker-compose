@@ -21,7 +21,7 @@ jobs:
     - name: Set tag
       id: vars
       run: |
-        echo "IMAGE_TAG=`head -1 latestVersion`" >> $GITHUB_ENV
+        echo "::set-output name=tag::$(head -1 latestVersion)"
     - name: Run deploy script
       uses: appleboy/ssh-action@master
       with:
@@ -29,4 +29,4 @@ jobs:
         PORT: ${PORT}
         USERNAME: ${USERNAME}
         KEY: ${SSHKEY}
-        script: deploy_nxtp ${IMAGE_TAG}
+        script: deploy_nxtp ${{ steps.vars.outputs.tag }}
