@@ -35,7 +35,7 @@ Modify `docker-compose.yml` file and uncomment (remove #) for all `alertmanager-
 
 Note: for Discord notifications used two containers `alertmanager` and `alertmanager-discord`
 
-4. Create NXTP configuration file `~/vector-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs]() for configuration description. TODO
+4. Create NXTP configuration file `~/vector-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/Reference/configuration/) for configuration description.
 
 5. Create docker-compose services, volumes and network.
 
