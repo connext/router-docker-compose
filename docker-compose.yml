@@ -40,6 +40,8 @@ services:
     container_name: prometheus
     image: prom/prometheus:latest
     restart: always
+    ports:
+      - 9090:9090
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.retention.time=45d
