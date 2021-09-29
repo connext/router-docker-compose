@@ -1,52 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS-CONNEXT",
-      "label": "Prometheus-Connext",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.0.5"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -58,6 +10,12 @@
         "limit": 100,
         "name": "Annotations & Alerts",
         "showIn": 0,
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -65,8 +23,7 @@
   "editable": true,
   "gnetId": 14930,
   "graphTooltip": 1,
-  "id": null,
-  "iteration": 1630070008139,
+  "iteration": 1632904386137,
   "links": [],
   "panels": [
     {
@@ -97,14 +54,14 @@
         "content": "<img width=\"183\" height=\"45\" src=\"https://connext.network/images/connext__Logo--WhiteText-MultiColor-p-500.png\">\n\n<div style=\"margin-top: 30px;\">\n<div style=\"font-weight: 800; font-size: 18px;\">The Interoperability Protocol of L2 Ethereum.</div>\n<div style=\"margin-top:5px;\">Connext is the leading protocol for fast, fully noncustodial transfers and contract calls between EVM-compatible systems.</div>\n<div style=\"margin-top:10px; font-weight: 800; font-size: 18px;\">Helpful Links</div>\n<div style=\"\">\n<ul>\n  <li><a href=\"https://docs.connext.network/\" target=\"_blank\">Docs</a></li>\n  <li><a href=\"https://explorer.connext.network/\" target=\"_blank\">Explorer</a></li>\n  <li><a href=\"https://discord.com/invite/VcNFQdKuxM\" target=\"_blank\">Discord</a></li>\n  <li><a href=\"https://twitter.com/connextnetwork\" target=\"_blank\">Twitter</a></li>\n</ul>\n</div>\n</div>\n",
         "mode": "html"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "timeFrom": null,
       "timeShift": null,
       "transparent": true,
       "type": "text"
     },
     {
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -206,7 +163,7 @@
         "showThresholdMarkers": false,
         "text": {}
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -238,7 +195,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -287,7 +244,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -306,7 +263,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -355,7 +312,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -374,7 +331,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -423,7 +380,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -449,7 +406,7 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -551,7 +508,7 @@
         "showThresholdMarkers": false,
         "text": {}
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -583,7 +540,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -632,7 +589,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -651,7 +608,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -700,7 +657,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -719,7 +676,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -768,7 +725,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -819,7 +776,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -856,7 +813,7 @@
         "alertThreshold": true
       },
       "percentage": true,
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -968,7 +925,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "links": [],
@@ -1006,7 +963,7 @@
         "alertThreshold": true
       },
       "percentage": true,
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1091,7 +1048,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1129,7 +1086,7 @@
         "alertThreshold": true
       },
       "percentage": true,
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1234,7 +1191,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -1271,7 +1228,7 @@
         "alertThreshold": true
       },
       "percentage": true,
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1356,7 +1313,7 @@
       }
     },
     {
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1458,7 +1415,7 @@
         "showThresholdMarkers": false,
         "text": {}
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -1489,7 +1446,7 @@
       "type": "gauge"
     },
     {
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -1591,7 +1548,7 @@
         "showThresholdMarkers": false,
         "text": {}
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -1623,7 +1580,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -1672,7 +1629,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -1699,7 +1656,7 @@
     },
     {
       "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS-CONNEXT}",
+      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
@@ -1748,7 +1705,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.0.5",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
@@ -1786,7 +1743,9 @@
         "datasource": "${DS_PROMETHEUS-CONNEXT}",
         "definition": "label_values(label)",
         "description": null,
-        "error": null,
+        "error": {
+          "message": "Datasource named ${DS_PROMETHEUS-CONNEXT} was not found"
+        },
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -1812,7 +1771,9 @@
         "datasource": "${DS_PROMETHEUS-CONNEXT}",
         "definition": "",
         "description": null,
-        "error": null,
+        "error": {
+          "message": "Datasource named ${DS_PROMETHEUS-CONNEXT} was not found"
+        },
         "hide": 0,
         "includeAll": true,
         "label": null,
@@ -1854,5 +1815,5 @@
   "timezone": "",
   "title": "NXTP Router Stats",
   "uid": "Hlhy7p37k616",
-  "version": 8
+  "version": 1
 }
