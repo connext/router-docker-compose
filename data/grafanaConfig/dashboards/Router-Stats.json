@@ -62,62 +62,80 @@
     },
     {
       "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "id": 179,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.3",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "count(increase(router_auction_received[24h]))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Auction Received",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
       "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "displayName": "Attempt",
           "mappings": [],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-red",
+                "color": "green",
                 "value": null
-              },
-              {
-                "color": "semi-dark-green",
-                "value": ""
               }
             ]
           }
         },
         "overrides": [
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "B"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Successful"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "percentage",
-                  "steps": [
-                    {
-                      "color": "semi-dark-red",
-                      "value": null
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": 30
-                    },
-                    {
-                      "color": "semi-dark-green",
-                      "value": 70
-                    }
-                  ]
-                }
-              }
-            ]
-          },
           {
             "matcher": {
               "id": "byFrameRefID",
@@ -146,12 +164,16 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 11,
-        "x": 4,
+        "w": 4,
+        "x": 8,
         "y": 1
       },
       "id": 125,
       "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -159,426 +181,115 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": false,
-        "text": {}
+        "text": {},
+        "textMode": "auto"
       },
       "pluginVersion": "8.1.3",
       "targets": [
         {
           "exemplar": true,
-          "expr": "router_auction_attempt",
-          "format": "time_series",
+          "expr": "count(increase(router_auction_attempt[24h]))",
+          "format": "table",
+          "instant": false,
           "interval": "",
           "legendFormat": "Attempt",
           "refId": "A"
-        },
-        {
-          "exemplar": true,
-          "expr": "router_auction_successful",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Successful",
-          "refId": "B"
-        },
-        {
-          "exemplar": true,
-          "expr": "router_auction_failed  ",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Failed",
-          "refId": "C"
         }
       ],
-      "title": "Router Action",
-      "type": "gauge"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red",
-                "value": null
-              },
-              {
-                "color": "#FADE2A",
-                "value": 0.17
-              },
-              {
-                "color": "orange",
-                "value": 11.9
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 15,
-        "y": 1
-      },
-      "id": 56,
-      "links": [],
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "router_auction_chance",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{validators}}",
-          "refId": "B"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Router Action Chance",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "orange",
-                "value": null
-              },
-              {
-                "color": "#FADE2A",
-                "value": 0.17
-              },
-              {
-                "color": "orange",
-                "value": 11.9
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 18,
-        "y": 1
-      },
-      "id": 159,
-      "links": [],
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "router_onchain_liquidity",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{validators}}",
-          "refId": "B"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Router Action Chance",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "orange",
-                "value": null
-              },
-              {
-                "color": "#FADE2A",
-                "value": 0.17
-              },
-              {
-                "color": "#299c46",
-                "value": 11.9
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 21,
-        "y": 1
-      },
-      "id": 160,
-      "links": [],
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "router_onchain_liquidity",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Onchain Liquidity",
-          "refId": "B"
-        },
-        {
-          "exemplar": true,
-          "expr": "router_fees",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Fees",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Router",
-      "transformations": [],
+      "title": "Auction Responses",
       "type": "stat"
     },
     {
       "datasource": "Prometheus",
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "displayName": "Attempt",
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-red",
+                "color": "blue",
                 "value": null
-              },
-              {
-                "color": "semi-dark-green",
-                "value": ""
               }
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "B"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Successful"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "percentage",
-                  "steps": [
-                    {
-                      "color": "red",
-                      "value": null
-                    },
-                    {
-                      "color": "semi-dark-yellow",
-                      "value": 30
-                    },
-                    {
-                      "color": "semi-dark-green",
-                      "value": 70
-                    }
-                  ]
-                }
-              }
-            ]
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "id": 181,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.3",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "count(increase(router_transfer_attempt[24h]))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "title": "Attempted Transfers",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          {
-            "matcher": {
-              "id": "byFrameRefID",
-              "options": "C"
-            },
-            "properties": [
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "id": "displayName",
-                "value": "Failed"
+                "color": "green",
+                "value": null
               },
               {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "semi-dark-red",
-                      "value": null
-                    }
-                  ]
-                }
+                "color": "red",
+                "value": 80
               }
             ]
           }
-        ]
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 11,
-        "x": 4,
-        "y": 7
-      },
-      "id": 151,
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": false,
-        "text": {}
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "router_transfer_attempt",
-          "format": "time_series",
-          "interval": "",
-          "legendFormat": "Attempt",
-          "refId": "A"
-        },
-        {
-          "exemplar": true,
-          "expr": "router_transfer_successful",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Successful",
-          "refId": "B"
-        },
-        {
-          "exemplar": true,
-          "expr": "router_transfer_failed",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Failed",
-          "refId": "C"
-        }
-      ],
-      "title": "Router Transfer",
-      "type": "gauge"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "purple",
-                "value": null
-              },
-              {
-                "color": "#299c46",
-                "value": 99
-              },
-              {
-                "color": "#FADE2A",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "percentunit"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 6,
-        "w": 3,
-        "x": 15,
-        "y": 7
+        "w": 4,
+        "x": 16,
+        "y": 1
       },
-      "id": 152,
-      "links": [],
+      "id": 183,
       "options": {
         "colorMode": "background",
-        "graphMode": "none",
+        "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -593,161 +304,13 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "router_transfer_successful / router_transfer_attempt",
-          "hide": false,
+          "expr": "count(increase(router_transfer_successful[24h]))",
           "interval": "",
-          "legendFormat": "{{validators}}",
-          "refId": "B"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Router Transfer Rate",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "purple",
-                "value": null
-              },
-              {
-                "color": "#299c46",
-                "value": 99
-              },
-              {
-                "color": "#FADE2A",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 18,
-        "y": 7
-      },
-      "id": 161,
-      "links": [],
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "router_roi",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "{{validators}}",
-          "refId": "B"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Router Roi",
-      "transformations": [],
-      "type": "stat"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "Prometheus",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 1,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "purple",
-                "value": null
-              },
-              {
-                "color": "#299c46",
-                "value": 99
-              },
-              {
-                "color": "#FADE2A",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "string"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 3,
-        "x": 21,
-        "y": 7
-      },
-      "id": 162,
-      "links": [],
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.1.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "router_transfer_volume",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Transfer Volume",
-          "refId": "B"
-        },
-        {
-          "exemplar": true,
-          "expr": "router_gas_consumed",
-          "hide": false,
-          "interval": "",
-          "legendFormat": "Gas Consumed",
+          "legendFormat": "",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Router",
-      "transformations": [],
+      "title": "Successful Transfers",
       "type": "stat"
     },
     {
@@ -1796,7 +1359,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
