@@ -1298,66 +1298,6 @@
   "schemaVersion": 30,
   "style": "dark",
   "tags": [],
-  "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS-CONNEXT}",
-        "definition": "label_values(label)",
-        "description": null,
-        "error": {
-          "message": "Datasource named ${DS_PROMETHEUS-CONNEXT} was not found"
-        },
-        "hide": 0,
-        "includeAll": true,
-        "label": null,
-        "multi": false,
-        "name": "Type",
-        "options": [],
-        "query": {
-          "query": "label_values(label)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_PROMETHEUS-CONNEXT}",
-        "definition": "",
-        "description": null,
-        "error": {
-          "message": "Datasource named ${DS_PROMETHEUS-CONNEXT} was not found"
-        },
-        "hide": 0,
-        "includeAll": true,
-        "label": null,
-        "multi": false,
-        "name": "Validator",
-        "options": [],
-        "query": {
-          "query": "label_values(validators)",
-          "refId": ""
-        },
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": null,
-        "tagsQuery": null,
-        "type": "query",
-        "useTags": false
-      }
-    ]
-  },
   "time": {
     "from": "now-1h",
     "to": "now"
