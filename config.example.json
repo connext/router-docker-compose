@@ -14,7 +14,7 @@
   },
   "logLevel": "info",
   "network": "testnet",
-  "mnemonic": "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat",
+  "web3SignerUrl": "http://172.17.0.1:9000",
   "swapPools": [
     {
       "name": "TEST",
