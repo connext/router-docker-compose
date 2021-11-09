@@ -1,0 +1,5 @@
+# Signing key locations
+key-store-path: "/home/node/signer/keyFiles"
+
+http-listen-host: "0.0.0.0"
+http-host-allowlist: ["0.0.0.0", "172.17.0.1"]

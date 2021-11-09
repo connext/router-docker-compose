@@ -18,6 +18,25 @@ services:
 
   ################################################################################
 
+  signer:
+    container_name: web3signer
+    image: "consensys/web3signer:develop"
+    command: "--config-file=/home/node/signer/config.yaml eth1"
+    restart: always
+    ports:
+      - $WEB3SIGNER_HTTP_LISTEN_PORT:9000
+    volumes:
+      - ./data/signerConfig/config.yaml:/home/node/signer/config.yaml
+      - ./key.yaml:/home/node/signer/keyFiles/key.yaml
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  ################################################################################
+
   logdna:
     container_name: logdna
     image: logdna/logspout:v1.2.0
