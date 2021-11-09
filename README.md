@@ -37,7 +37,10 @@ Note: for Discord notifications used two containers `alertmanager` and `alertman
 
 4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/Reference/configuration/) for configuration description.
 
-5. Create docker-compose services, volumes and network.
+5. Create Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml`, it will be mounted into the router container. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/). 
+And for more custom commands of web3signer, edit `~/nxtp-router-docker-compose/data/signerConfig/config.yaml`. Refer [Web3Signer Command docs](https://docs.web3signer.consensys.net/en/latest/Reference/CLI/CLI-Syntax/)
+
+6. Create docker-compose services, volumes and network.
 
 ```
 cd ~/nxtp-router-docker-compose
