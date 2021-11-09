@@ -27,6 +27,7 @@ services:
       - $WEB3SIGNER_HTTP_LISTEN_PORT:9000
     volumes:
       - ./data/signerConfig/config.yaml:/home/node/signer/config.yaml
+      - ./key.yaml:/home/node/signer/keyFiles/key.yaml
     logging:
       driver: json-file
       options:

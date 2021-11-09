@@ -1,2 +1,2 @@
 # Signing key locations
-key-store-path: "/keyFiles/"
+key-store-path: "/home/node/signer/keyFiles"
