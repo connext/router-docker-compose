@@ -21,12 +21,12 @@ services:
   signer:
     container_name: web3signer
     image: "consensys/web3signer:develop"
-    command: "--config-file=/home/node/signer/config.yaml eth1"
+    command: "--key-store-path=/home/node/signer/ eth1"
     restart: always
     ports:
       - $WEB3SIGNER_HTTP_LISTEN_PORT:9000
     volumes:
-      - ./signer_config.yaml:/home/node/signer/config.yaml
+      - ${WEB3SIGNER_KEY_STORE_PATH}:/home/node/signer/
     logging:
       driver: json-file
       options:
