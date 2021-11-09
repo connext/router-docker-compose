@@ -1,0 +1,2 @@
+# Signing key locations
+key-store-path: "/nxtp-router-docker-compose/keyFiles/"
