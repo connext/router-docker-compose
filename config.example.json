@@ -14,7 +14,7 @@
   },
   "logLevel": "info",
   "network": "testnet",
-  "web3SignerUrl": "http://172.17.0.1:9000",
+  "web3SignerUrl": "http://signer:9000",
   "swapPools": [
     {
       "name": "TEST",
