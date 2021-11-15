@@ -15,7 +15,7 @@ Production-ready docker-compose for NXTP routers.
 
 ```
 cd ~
-git clone https://github.com/connext/vector-router-docker-compose.git
+git clone https://github.com/connext/nxtp-router-docker-compose.git
 ```
 
 2. Rename file `.env.example` to `.env` and modify it. You need to set next environment variables:
