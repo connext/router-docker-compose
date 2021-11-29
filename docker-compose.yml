@@ -13,6 +13,7 @@ services:
       driver: json-file
       options:
         max-size: 10m
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     networks:
       - nxtp
 
@@ -30,6 +31,7 @@ services:
       driver: json-file
       options:
         max-size: 10m
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     networks:
       - nxtp
 
@@ -48,6 +50,7 @@ services:
       driver: json-file
       options:
         max-size: 10m
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     networks:
       - nxtp
 
@@ -85,6 +88,34 @@ services:
       - ./data/grafanaConfig/grafana:/etc/grafana
       - ./data/grafanaConfig/dashboards:/etc/dashboards
       - grafana:/var/lib/grafana
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - ./data/lokiConfig:/etc/loki
+      - loki:/loki
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - ./data/promtailConfig/config.yml:/etc/promtail/promtail.yml
+    command: -config.file=/etc/promtail/promtail.yml
     logging:
       driver: json-file
       options:
@@ -154,3 +185,5 @@ networks:
 volumes:
   prometheus:
   grafana:
+  loki:
+

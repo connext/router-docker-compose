@@ -1,0 +1,294 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "iteration": 1638203608247,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "panels": [],
+      "repeat": "container",
+      "scopedVars": {
+        "container": {
+          "selected": false,
+          "text": "web3signer:develop",
+          "value": "web3signer:develop"
+        }
+      },
+      "title": "$container",
+      "type": "row"
+    },
+    {
+      "datasource": "loki",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "7.3.5",
+      "scopedVars": {
+        "container": {
+          "selected": false,
+          "text": "web3signer:develop",
+          "value": "web3signer:develop"
+        }
+      },
+      "targets": [
+        {
+          "expr": "{job=\"containerlogs\", container_name=~\".*/$container\"}",
+          "legendFormat": "",
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Full Logs",
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 7,
+      "panels": [],
+      "repeatIteration": 1638203608247,
+      "repeatPanelId": 2,
+      "scopedVars": {
+        "container": {
+          "selected": false,
+          "text": "nxtp-router:latest",
+          "value": "nxtp-router:latest"
+        }
+      },
+      "title": "$container",
+      "type": "row"
+    },
+    {
+      "datasource": "loki",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 8,
+      "options": {
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "7.3.5",
+      "repeatIteration": 1638203608247,
+      "repeatPanelId": 6,
+      "repeatedByRow": true,
+      "scopedVars": {
+        "container": {
+          "selected": false,
+          "text": "nxtp-router:latest",
+          "value": "nxtp-router:latest"
+        }
+      },
+      "targets": [
+        {
+          "expr": "{job=\"containerlogs\", container_name=~\".*/$container\"}",
+          "legendFormat": "",
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Full Logs",
+      "type": "logs"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 9,
+      "panels": [],
+      "repeatIteration": 1638203608247,
+      "repeatPanelId": 2,
+      "scopedVars": {
+        "container": {
+          "selected": false,
+          "text": "logspout:v1.2.0",
+          "value": "logspout:v1.2.0"
+        }
+      },
+      "title": "$container",
+      "type": "row"
+    },
+    {
+      "datasource": "loki",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 10,
+      "options": {
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "pluginVersion": "7.3.5",
+      "repeatIteration": 1638203608247,
+      "repeatPanelId": 6,
+      "repeatedByRow": true,
+      "scopedVars": {
+        "container": {
+          "selected": false,
+          "text": "logspout:v1.2.0",
+          "value": "logspout:v1.2.0"
+        }
+      },
+      "targets": [
+        {
+          "expr": "{job=\"containerlogs\", container_name=~\".*/$container\"}",
+          "legendFormat": "",
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Full Logs",
+      "type": "logs"
+    }
+  ],
+  "schemaVersion": 26,
+  "style": "dark",
+  "tags": [
+    "Logs"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "tags": [],
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "loki",
+        "definition": "label_values(container_name)",
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": true,
+        "name": "container",
+        "options": [
+          {
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "selected": false,
+            "text": "web3signer:develop",
+            "value": "web3signer:develop"
+          },
+          {
+            "selected": false,
+            "text": "nxtp-router:latest",
+            "value": "nxtp-router:latest"
+          },
+          {
+            "selected": false,
+            "text": "logspout:v1.2.0",
+            "value": "logspout:v1.2.0"
+          }
+        ],
+        "query": "label_values(container_name)",
+        "refresh": 0,
+        "regex": ".*/(.*)",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Containers Logs",
+  "uid": null,
+  "version": 0
+}
