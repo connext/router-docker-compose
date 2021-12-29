@@ -1,6 +1,11 @@
 {
   "adminToken": "supersecret",
   "chainConfig": {
+    "1": {
+      "providers": [
+        "https://eth-mainnet.alchemyapi.io/v2/"
+      ]
+    },
     "4": {
       "providers": [
         "https://eth-rinkeby.alchemyapi.io/v2/"
