@@ -14,13 +14,15 @@ services:
       options:
         max-size: 10m
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    depends_on:
+      - "signer"
     networks:
       - nxtp
 
   ################################################################################
 
   signer:
-    container_name: web3signer
+    container_name: signer
     image: "consensys/web3signer:develop"
     command: "--config-file=/home/node/signer/config.yaml eth1"
     restart: always
