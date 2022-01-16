@@ -21,8 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": null,
-  "iteration": 1639061049947,
+  "iteration": 1642270613173,
   "links": [
     {
       "asDropdown": true,
@@ -496,7 +495,7 @@
     },
     {
       "datasource": "${datasource}",
-      "description": "",
+      "description": "Gas costs and relayer fees",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -568,7 +567,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(increase(router_gas_consumed_usd[$__range]))",
+          "expr": "sum(increase(router_gas_consumed_usd[$__range])) + sum(increase(relayer_fees_paid_usd[$__range]))",
           "format": "table",
           "instant": false,
           "interval": "",
@@ -576,7 +575,7 @@
           "refId": "A"
         }
       ],
-      "title": "Gas Consumed in USD",
+      "title": "Costs in USD",
       "type": "stat"
     },
     {
@@ -714,8 +713,93 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
+        "w": 6,
         "x": 0,
+        "y": 13
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.1.3",
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(increase(router_fees_usd[$__range])) - sum(increase(router_gas_consumed_usd[$__range])) - sum(increase(relayer_fees_paid_usd[$__range]))",
+          "format": "table",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "LiquidityRemoved",
+          "refId": "A"
+        }
+      ],
+      "title": "Net Profits in USD",
+      "type": "stat"
+    },
+    {
+      "datasource": "${datasource}",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Failed"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
         "y": 13
       },
       "id": 17,
@@ -799,11 +883,11 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
-        "x": 8,
+        "w": 6,
+        "x": 12,
         "y": 13
       },
-      "id": 18,
+      "id": 84,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -884,8 +968,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
-        "x": 16,
+        "w": 6,
+        "x": 18,
         "y": 13
       },
       "id": 19,
@@ -4037,7 +4121,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "10"
           ],
@@ -4071,9 +4155,25 @@
     "from": "now-3h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "12h",
+      "1d",
+      "7d",
+      "30d"
+    ]
+  },
   "timezone": "",
   "title": "Router Dashboard",
-  "uid": null,
-  "version": 0
+  "uid": "Hlhy7p37k616",
+  "version": 2
 }
