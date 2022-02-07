@@ -1,5 +1,5 @@
 global:
-  scrape_interval:     15s
+  scrape_interval:     1m
   evaluation_interval: 15s
   external_labels:
       monitor: 'exporter-metrics'
@@ -16,7 +16,7 @@ alerting:
 scrape_configs:
 
 - job_name: 'production'
-  scrape_interval: 15s
+  scrape_interval: 1m
   scrape_timeout: 15s
   static_configs:
     - targets:
