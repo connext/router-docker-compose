@@ -23,7 +23,7 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 - `ROUTER_VERSION` - version to use, images found here: https://github.com/connext/nxtp/pkgs/container/nxtp-router
 - `LOGDNA_KEY` - set LogDNA Ignestion key
 - `LOGDNA_TAG` - optionally set LogDNA tag
-- `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT` - modify ports for external access
+- `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT`, `ROUTER_METRICS_PORT` - modify ports for external access
 
 3. (Optional) Modify `.env` file and set alert notifications to Slack or Discord.
 
