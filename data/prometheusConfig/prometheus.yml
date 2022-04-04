@@ -31,7 +31,7 @@ scrape_configs:
       - 'node-exporter:9100'
       labels:
         server: PRODUCTION
-    # - targets:
-    #   - 'router:8080'
-    #   labels:
-    #     server: PRODUCTION
+    - targets:
+      - 'router:8081'
+      labels:
+        server: PRODUCTION
