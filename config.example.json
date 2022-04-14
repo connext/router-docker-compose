@@ -1,38 +1,27 @@
 {
-  "adminToken": "supersecret",
-  "chainConfig": {
-    "1": {
-      "providers": [
-        "https://eth-mainnet.alchemyapi.io/v2/"
-      ]
-    },
-    "4": {
-      "providers": [
-        "https://eth-rinkeby.alchemyapi.io/v2/"
-      ]
-    },
-    "5": {
-      "providers": [
-        "https://eth-goerli.alchemyapi.io/v2/SU-"
-      ]
-    }
+  "logLevel": "debug",
+  "sequencerUrl": "https://sequencer.testnet.connext.ninja:8081",
+  "redis": {
+    "host": "localhost",
+    "port": 6379
   },
-  "logLevel": "info",
-  "network": "testnet",
-  "web3SignerUrl": "http://signer:9000",
-  "swapPools": [
-    {
-      "name": "TEST",
+  "server": {
+    "adminToken": "abacus",
+    "port": 8080
+  },
+  "chains": {
+    "2000": {
+      "providers": ["https://rinkeby.infura.io/v3/38f8f85747014e87b48035d84398a97c"]
+    },
+    "3000": {
+      "providers": ["https://kovan.infura.io/v3/38f8f85747014e87b48035d84398a97c"],
       "assets": [
         {
-          "chainId": 4,
-          "assetId": "0x9aC2c46d7AcC21c881154D57c0Dc1c55a3139198"
-        },
-        {
-          "chainId": 5,
-          "assetId": "0x8a1Cad3703E0beAe0e0237369B4fcD04228d1682"
+          "name": "TEST",
+          "address": "0xB5AabB55385bfBe31D627E2A717a7B189ddA4F8F"
         }
       ]
     }
-  ]
+  },
+  "mnemonic": "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
 }
