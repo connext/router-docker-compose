@@ -9,7 +9,9 @@ services:
      #- "127.0.0.1:$ROUTER_EXTERNAL_PORT:8080" #if you want to open router api port only to localhost
       - $ROUTER_EXTERNAL_PORT:8080
     volumes:
-      - ./config.json:/home/node/agents/router/config.json
+      - ./config.json:/config/config.json
+    environment:
+      - NXTP_CONFIG_FILE=/config/config.json
     logging:
       driver: json-file
       options:
