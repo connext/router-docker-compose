@@ -6,7 +6,6 @@ services:
     image: ghcr.io/connext/router:$ROUTER_VERSION
     restart: always
     ports:
-     #- "127.0.0.1:$ROUTER_EXTERNAL_PORT:8080" #if you want to open router api port only to localhost
       - $ROUTER_EXTERNAL_PORT:8080
     volumes:
       - ./config.json:/config/config.json
