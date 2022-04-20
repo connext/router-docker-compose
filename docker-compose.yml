@@ -41,6 +41,22 @@ services:
 
   ################################################################################
 
+  redis:
+    container_name: redis
+    image: "redis:latest"
+    restart: always
+    volumes:
+      - redis_data:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    networks:
+      - nxtp
+
+  ################################################################################
+
   logdna:
     container_name: logdna
     image: logdna/logspout:v1.2.0
@@ -177,4 +193,5 @@ volumes:
   prometheus:
   grafana:
   loki:
+  redis_data:
 
