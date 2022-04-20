@@ -12,7 +12,13 @@
   },
   "chains": {
     "2000": {
-      "providers": ["https://rinkeby.infura.io/v3/38f8f85747014e87b48035d84398a97c"]
+      "providers": ["https://rinkeby.infura.io/v3/38f8f85747014e87b48035d84398a97c"],
+      "assets": [
+        {
+          "name": "TEST",
+          "address": "0x3CF0A8545bF9a768d019baea96EC19573FFE0665"
+        }
+      ]
     },
     "3000": {
       "providers": ["https://kovan.infura.io/v3/38f8f85747014e87b48035d84398a97c"],
