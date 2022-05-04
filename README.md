@@ -23,24 +23,20 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 - `ROUTER_VERSION` - version to use, images found here: https://github.com/connext/nxtp/pkgs/container/nxtp-router
 - `LOGDNA_KEY` - set LogDNA Ignestion key
 - `LOGDNA_TAG` - optionally set LogDNA tag
-- `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT`, `ROUTER_METRICS_PORT` - modify ports for external access
+- `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT`
 
 3. (Optional) Modify `.env` file and set alert notifications to Slack or Discord.
 
-For Discord set:
-
-- `DISCORD_WEBHOOK` - Discord webhook full url
-
-Modify `docker-compose.yml` file and uncomment (remove #) for all `alertmanager-discord` section.
-
-Note: for Discord notifications used two containers `alertmanager` and `alertmanager-discord`
-
 4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/Reference/configuration/) for configuration description.
 
-5. Create Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml`, it will be mounted into the router container. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/). 
+5. Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config.
+
+
+6. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file use raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/). 
 And for more custom commands of web3signer, edit `~/nxtp-router-docker-compose/data/signerConfig/config.yaml`. Refer [Web3Signer Command docs](https://docs.web3signer.consensys.net/en/latest/Reference/CLI/CLI-Syntax/)
 
-6. Create docker-compose services, volumes and network.
+
+7. Create docker-compose services, volumes and network.
 
 ```
 cd ~/nxtp-router-docker-compose
@@ -98,7 +94,3 @@ docker-compose restart
 docker-compose pull
 docker-compose up -d
 ```
-
-## CI
-
-Update `latestVersion` file in the repo to automatically update production router.
