@@ -27,9 +27,9 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 
 3. (Optional) Modify `.env` file and set alert notifications to Slack or Discord.
 
-4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/configuration) for configuration description.
+4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/configuration) for configuration description. You can use `.config.example.json` as example.
 
-5. Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config. (Optional, currently the docker-compose file includes redis container as well)
+5. (Optional) Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config. (currently the docker-compose file includes redis container as well)
 
 
 
