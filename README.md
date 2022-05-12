@@ -27,9 +27,10 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 
 3. (Optional) Modify `.env` file and set alert notifications to Slack or Discord.
 
-4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/Reference/configuration/) for configuration description.
+4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/configuration) for configuration description.
 
-5. Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config.
+5. Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config. (Optional, currently the docker-compose file includes redis container as well)
+
 
 
 6. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file use raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/). 
