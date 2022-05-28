@@ -1,0 +1,12 @@
+# The root route on which each incoming alert enters.
+route:
+  group_by: ['alertname']
+  group_wait: 20s
+  group_interval: 5m
+  repeat_interval: 3h
+  receiver: discord_webhook
+
+receivers:
+  - name: 'discord_webhook'
+    webhook_configs:
+      - url: 'http://alertmanager-discord:9094'
