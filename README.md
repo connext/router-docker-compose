@@ -26,6 +26,7 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 - `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT`
 
 3. (Optional) Modify `.env` file and set alert notifications to Slack or Discord.
+- `DISCORD_WEBHOOK` - optionally set discord webhook tag to receive custom alerts. See [Discord docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) to create a webhook.
 
 4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/configuration) for configuration description. You can use `config.example.json` as example.
 

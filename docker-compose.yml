@@ -143,6 +143,36 @@ services:
     networks:
       - nxtp
 
+  alertmanager:
+    image: prom/alertmanager
+    restart: always
+    volumes:
+      - ./data/alertmanagerConfig:/config
+      - alertmanager:/data
+    command:
+      - --config.file=/config/alertmanager.yml
+    ports:
+      - 9093:9093
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+  alertmanager-discord:
+    container_name: alertmanager-discord
+    image: benjojo/alertmanager-discord
+    restart: always
+    environment:
+      DISCORD_WEBHOOK: $DISCORD_WEBHOOK
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
   ################################################################################
 
   node-exporter:
@@ -194,4 +224,5 @@ volumes:
   grafana:
   loki:
   redis_data:
+  alertmanager:
 
