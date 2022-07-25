@@ -25,14 +25,15 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 - `LOGDNA_TAG` - optionally set LogDNA tag
 - `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT`
 
-3. (Optional) Modify `.env` file and set alert notifications to Slack or Discord.
+3. (Optional) Modify `data/alertmanagerConfig/alertmanager.yml` file and set alert notifications to Slack, Discord, Telegram, Pagerduty, Opsgenie, etc. Additional configuration might be required.
 
-4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/Reference/configuration/) for configuration description.
+4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/configuration) for configuration description. You can use `config.example.json` as example.
 
-5. Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config.
+5. (Optional) Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config. (currently the docker-compose file includes Redis container as well)
 
 
-6. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file use raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/). 
+
+6. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file use raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/).
 And for more custom commands of web3signer, edit `~/nxtp-router-docker-compose/data/signerConfig/config.yaml`. Refer [Web3Signer Command docs](https://docs.web3signer.consensys.net/en/latest/Reference/CLI/CLI-Syntax/)
 
 
@@ -87,7 +88,7 @@ docker-compose restart
 
 ### Update Version
 
-1. Modify `.env` to change `NXTP_VERSION`
+1. Modify `.env` to change `ROUTER_VERSION`
 2. Update stack
 
 ```

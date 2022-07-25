@@ -1,5 +1,15 @@
+global:
+  resolve_timeout: 1m
+#  slack_api_url: 'https://hooks.slack.com/services/your_hook'
+#  telegram_api_url: 'https://api.telegram.org'
+#  pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+
+
 route:
   receiver: 'mail'
+#  receiver: 'slack-notifications'
+#  receiver: 'telegram-notifications'
+#  receiver: 'telegram-notifications'
   repeat_interval: 4h
   group_by: [ alertname ]
 
@@ -9,6 +19,37 @@ receivers:
     email_configs:
       - smarthost: 'smtp.gmail.com:465'
         auth_username: 'your_mail@gmail.com'
-        auth_password: ""
+        auth_identity: 'your_mail@gmail.com'
+        auth_password: ''
         from: 'your_mail@gmail.com'
         to: 'some_mail@gmail.com'
+        send_resolved: true
+
+### Slack configuration
+  # - name: 'slack-notifications'
+  #   slack_configs:
+  #   - channel: '#monitoring-instances'
+  #     send_resolved: true
+
+### Discord configuration
+### Check out https://github.com/benjojo/alertmanager-discord - you need to run a separate docker container
+
+### Telegram configuration
+# - name: 'telegram-notifications'
+#   telegram_configs:
+#   - send_resolved: <boolean> | default = true ]
+#     bot_token: ''
+#     chat_id: 1111223
+#     message: '{{ template "telegram.default.message" .}}'
+#     disable_notifications: false 
+#     parse_mode: "MarkdownV2" 
+
+### Pagerduty configuration
+# - name: 'pagerduty-notifications'
+#   pagerduty-configs:
+#   - send_resolved: <boolean> | default = true ]
+#     # The following two options are mutually exclusive.
+#     # The PagerDuty integration key (when using PagerDuty integration type `Events API v2`).
+#     routing_key: <tmpl_secret>
+#     # The PagerDuty integration key (when using PagerDuty integration type `Prometheus`).
+#     service_key: <tmpl_secret>
