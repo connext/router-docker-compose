@@ -29,9 +29,7 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 
 4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/configuration) for configuration description. You can use `config.example.json` as example.
 
-5. (Optional) Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config. (currently the docker-compose file includes Redis container as well)
-
-
+5. (Optional) Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config. (currently the docker-compose file includes redis container as well)
 
 6. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file use raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/).
 And for more custom commands of web3signer, edit `~/nxtp-router-docker-compose/data/signerConfig/config.yaml`. Refer [Web3Signer Command docs](https://docs.web3signer.consensys.net/en/latest/Reference/CLI/CLI-Syntax/)

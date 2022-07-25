@@ -11,21 +11,21 @@
     "port": 8080
   },
   "chains": {
-    "2000": {
-      "providers": ["https://rinkeby.infura.io/v3/38f8f85747014e87b48035d84398a97c"],
+    "1111": {
       "assets": [
         {
-          "name": "TEST",
-          "address": "0x3CF0A8545bF9a768d019baea96EC19573FFE0665"
+          "address": "0xcF4d2994088a8CDE52FB584fE29608b63Ec063B2",
+          "name": "TEST"
         }
-      ]
+      ],
+      "providers": [ "https://rinkeby.infura.io/v3/38f8f85747014e87b48035d84398a97c" ]
     },
-    "3000": {
+    "2221": {
       "providers": ["https://kovan.infura.io/v3/38f8f85747014e87b48035d84398a97c"],
       "assets": [
         {
-          "name": "TEST",
-          "address": "0xB5AabB55385bfBe31D627E2A717a7B189ddA4F8F"
+          "address": "0xB5AabB55385bfBe31D627E2A717a7B189ddA4F8F",
+          "name": "TEST"
         }
       ]
     }
