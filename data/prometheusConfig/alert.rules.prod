@@ -5,15 +5,6 @@ groups:
 
 ###
 
-  - alert: prod_node_down
-    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="node",server="PRODUCTION"})
-    for: 10s
-    labels:
-      severity: critical
-    annotations:
-      summary: "{{$labels.server}}: Node down"
-      description: "Node container is down for more than 10 seconds."
-
   - alert: prod_router_down
     expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="router",server="PRODUCTION"})
     for: 10s
@@ -22,24 +13,6 @@ groups:
     annotations:
       summary: "{{$labels.server}}: Router down"
       description: "Router container is down for more than 10 seconds."
-
-  - alert: prod_node_db_down
-    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="db-node",server="PRODUCTION"})
-    for: 10s
-    labels:
-      severity: critical
-    annotations:
-      summary: "{{$labels.server}}: Node database down"
-      description: "Node database is down for more than 10 seconds."
-
-  - alert: prod_router_db_down
-    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="db-router",server="PRODUCTION"})
-    for: 10s
-    labels:
-      severity: critical
-    annotations:
-      summary: "{{$labels.server}}: Router database down"
-      description: "Router database is down for more than 10 seconds."
 
 ###
 
