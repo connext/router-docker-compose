@@ -16,8 +16,15 @@ services:
       options:
         max-size: 10m
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    healthcheck:
+      test: netstat -ltn | grep -c 8080
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
     depends_on:
       - "signer"
+      - "redis"
     networks:
       - nxtp
 
@@ -25,7 +32,7 @@ services:
 
   signer:
     container_name: signer
-    image: "consensys/web3signer:develop"
+    image: "consensys/web3signer:$WEB3SIGNER_VERSION"
     command: "--config-file=/home/node/signer/config.yaml eth1"
     restart: always
     volumes:
@@ -36,6 +43,12 @@ services:
       options:
         max-size: 10m
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    healthcheck:
+      test: netstat -ltn | grep -c 9000
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
@@ -43,7 +56,7 @@ services:
 
   redis:
     container_name: redis
-    image: "redis:6"
+    image: "redis:$REDIS_VERSION"
     restart: always
     volumes:
       - redis_data:/data
@@ -52,6 +65,12 @@ services:
       options:
         max-size: 10m
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    healthcheck:
+      test: redis-cli --raw incr ping
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
@@ -59,7 +78,7 @@ services:
 
   logdna:
     container_name: logdna
-    image: logdna/logspout:v1.2.0
+    image: logdna/logspout:$LOGDNA_VERSION
     restart: always
     environment:
       LOGDNA_KEY: $LOGDNA_KEY
@@ -71,6 +90,12 @@ services:
       options:
         max-size: 10m
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    healthcheck:
+      test: netstat -ltn | grep -c 80
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
@@ -78,10 +103,10 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:latest
+    image: prom/prometheus:$PROMETHEUS_VERSION
     restart: always
     ports:
-      - 9090:9090
+      - $PROMETHEUS_EXTERNAL_PORT:9090
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.retention.time=45d
@@ -89,18 +114,48 @@ services:
       - ./data/prometheusConfig/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data/prometheusConfig/alert.rules.host:/etc/prometheus/alert.rules.host
       - ./data/prometheusConfig/alert.rules.prod:/etc/prometheus/alert.rules.prod
-      # - ./data/prometheusConfig/alert.rules.router:/etc/prometheus/alert.rules.router
       - prometheus:/prometheus
     logging:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 9090
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
+
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager:$ALERTAMANGER_VERSION
+    restart: always
+    ports:
+      - $ALERTMANAGER_EXTERNAL_PORT:9093
+    command: --config.file=/config/alertmanager.yml --log.level=debug
+    volumes:
+      - ./data/alertmanagerConfig/alertmanager.yml:/config/alertmanager.yml
+      - alertmanager:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 9093
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - nxtp
+
+
   grafana:
     container_name: grafana
-    image: grafana/grafana:latest
+    image: grafana/grafana:$GRAFANA_VERSION
     restart: always
     ports:
       - $GRAFANA_EXTERNAL_PORT:3000
@@ -112,13 +167,18 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 3000
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
   loki:
-    image: grafana/loki:latest
-    ports:
-      - "3100:3100"
+    container_name: loki
+    image: grafana/loki:$LOKI_VERSION
     command: -config.file=/etc/loki/config.yml
     volumes:
       - ./data/lokiConfig:/etc/loki
@@ -127,11 +187,18 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 3100
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
   promtail:
-    image: grafana/promtail:latest
+    container_name: promtail
+    image: grafana/promtail:$PROMTAIL_VERSION
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers
       - ./data/promtailConfig/config.yml:/etc/promtail/promtail.yml
@@ -140,6 +207,12 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: exit 0
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
@@ -147,7 +220,7 @@ services:
 
   node-exporter:
     container_name: node-exporter
-    image: prom/node-exporter:v1.1.2
+    image: prom/node-exporter:$NODE_EXPORTER_VERSION
     restart: always
     command:
       - --path.procfs=/host/proc
@@ -165,22 +238,37 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 9100
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
   cadvisor:
     container_name: cadvisor
-    image: gcr.io/cadvisor/cadvisor:v0.39.0
+    image: gcr.io/cadvisor/cadvisor:$CADVISOR_VERSION
     restart: always
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:rw
+      - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg:/dev/kmsg
     logging:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 8080
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
     networks:
       - nxtp
 
@@ -194,4 +282,4 @@ volumes:
   grafana:
   loki:
   redis_data:
-
+  alertmanager:
