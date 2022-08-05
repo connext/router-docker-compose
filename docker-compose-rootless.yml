@@ -76,6 +76,24 @@ services:
 
   ################################################################################
 
+  dcmetrics:
+    container_name: dcmetrics
+    image: "wywywywy/docker_stats_exporter:latest"
+    restart: always
+    volumes:
+      - /run/user/${USERID}/docker.sock:/var/run/docker.sock:ro
+#    ports:
+#      - 9487:9487
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+    networks:
+      - nxtp
+
+
+  ################################################################################
+
   logdna:
     container_name: logdna
     image: logdna/logspout:$LOGDNA_VERSION
@@ -84,7 +102,7 @@ services:
       LOGDNA_KEY: $LOGDNA_KEY
       TAGS: $LOGDNA_TAG
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/user/${USERID}/docker.sock:/var/run/docker.sock
     logging:
       driver: json-file
       options:
@@ -106,7 +124,7 @@ services:
     image: prom/prometheus:$PROMETHEUS_VERSION
     restart: always
     ports:
-      - $PROMETHEUS_EXTERNAL_PORT:9090
+      - 9090:9090
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.retention.time=45d
@@ -127,7 +145,6 @@ services:
       start_period: 10s
     networks:
       - nxtp
-
 
   alertmanager:
     container_name: alertmanager
@@ -151,7 +168,6 @@ services:
       start_period: 10s
     networks:
       - nxtp
-
 
   grafana:
     container_name: grafana
@@ -177,7 +193,6 @@ services:
       - nxtp
 
   loki:
-    container_name: loki
     image: grafana/loki:$LOKI_VERSION
     command: -config.file=/etc/loki/config.yml
     volumes:
@@ -197,11 +212,10 @@ services:
       - nxtp
 
   promtail:
-    container_name: promtail
     image: grafana/promtail:$PROMTAIL_VERSION
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers
-      - ./data/promtailConfig/config.yml:/etc/promtail/promtail.yml
+      - ~/.local/share/docker/containers:/var/lib/docker/containers
+      - ./data/promtailConfig/config-rootless.yml:/etc/promtail/promtail.yml
     command: -config.file=/etc/promtail/promtail.yml
     logging:
       driver: json-file
@@ -227,23 +241,18 @@ services:
       - --path.sysfs=/host/sys
       - --path.rootfs=/rootfs
       - --collector.filesystem.ignored-mount-points
-      - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns)(/)
+      - ^/(sys|proc|dev|host|etc|userfs/.local/share/docker/containers|userfs/.local/share/docker/overlay2|rootfs/run/user/${USERID}/docker/netns)(/)
     cap_add:
       - SYS_TIME
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+      - ~:/userfs:ro
     logging:
       driver: json-file
       options:
         max-size: 10m
-    healthcheck:
-      test: netstat -ltn | grep -c 9100
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
     networks:
       - nxtp
 
@@ -254,21 +263,18 @@ services:
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
+      - /etc/machine-id:/etc/machine-id:ro
+      - /run/user/${USERID}/docker.sock:/var/run/docker.sock
+      - ~/.local/share/docker:/var/lib/docker:ro
       - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
+      - /dev/disk:/dev/disk
+      - ~/.local/share/docker:/var/lib/docker:ro
     devices:
       - /dev/kmsg:/dev/kmsg
     logging:
       driver: json-file
       options:
         max-size: 10m
-    healthcheck:
-      test: netstat -ltn | grep -c 8080
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
     networks:
       - nxtp
 
@@ -282,4 +288,3 @@ volumes:
   grafana:
   loki:
   redis_data:
-  alertmanager:
