@@ -94,3 +94,8 @@ docker-compose restart
 docker-compose pull
 docker-compose up -d
 ```
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
