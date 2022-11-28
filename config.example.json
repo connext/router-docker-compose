@@ -34,7 +34,6 @@
   },
   "environment": "production",
   "logLevel": "debug",
-  "nomadEnvironment": "none",
   "sequencerUrl": "https://sequencer.testnet.connext.ninja",
   "server": { "adminToken": "blahblah" },
   "web3SignerUrl": "http://signer:9000",

@@ -21,18 +21,14 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 2. Rename file `.env.example` to `.env` and modify it. You need to set next environment variables:
 
 - `ROUTER_VERSION` - version to use, images found here: https://github.com/connext/nxtp/pkgs/container/nxtp-router
-- `LOGDNA_KEY` - set LogDNA Ignestion key
-- `LOGDNA_TAG` - optionally set LogDNA tag
-- `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT`
 
-3. (Optional) Modify `.env` file and set alert notifications to Slack or Discord.
+Note: Do not use `:latest` tag! This will not be stable as we are constantly updating! Find the latest [Amarok release](https://github.com/connext/nxtp/releases) and use the version semver tagged, i.e. `0.2.1-beta.10`.
 
-4. Create NXTP configuration file `~/nxtp-router-docker-compose/config.json`, it will be mounted into router container. See [Connext docs](https://docs.connext.network/Routers/Reference/configuration/) for configuration description.
+3. Go through `docker-compose.yml` and change any of the externally mapped ports if those ports do not work with your host configuration.
 
-5. Create external [Redis](https://redis.io/) instance and insert URL into `redisUrl` in config.
+4. Create configuration file `~/nxtp-router-docker-compose/config.json, it will be mounted into router container. Use the `config.example.json` for guidance on what config items to change/modify. At minimum, please add your own paid RPC providers to the `providers` array for each chain, and verify the assets for the desired chains. See [Connext docs](https://docs.connext.network/Routers/Reference/configuration/) for configuration description.
 
-
-6. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file uses raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/22.5.1/HowTo/Use-Signing-Keys/). 
+5. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file uses raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/22.5.1/HowTo/Use-Signing-Keys/). 
 And for more custom commands of web3signer, edit `~/nxtp-router-docker-compose/data/signerConfig/config.yaml`. Refer [Web3Signer Command docs](https://docs.web3signer.consensys.net/en/22.5.1/Reference/CLI/CLI-Syntax/)
 
 
