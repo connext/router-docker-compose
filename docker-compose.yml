@@ -1,16 +1,20 @@
 version: "3.8"
 
 services:
-  router:
-    container_name: router
-    image: ghcr.io/connext/router:$ROUTER_VERSION
+  ################################################################################
+  # ROUTER SERVICES
+  router-publisher:
+    container_name: router-publisher
+    depends_on:
+      - rabbitmq
+      - signer
+      - redis
+    image: ghcr.io/connext/router-publisher:$ROUTER_VERSION
     restart: always
     ports:
-      - $ROUTER_EXTERNAL_PORT:8080
-    volumes:
-      - ./config.json:/config/config.json
-    environment:
-      - NXTP_CONFIG_FILE=/config/config.json
+      - "8880:8080"
+    # environment:
+    #   - NXTP_CONFIG_FILE=/home/node/router/config.json
     logging:
       driver: json-file
       options:
@@ -22,14 +26,53 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+    volumes:
+      - ./config.json:/home/node/packages/agents/router/config.json
+    networks:
+      - nxtp
+
+  router-subscriber:
+    container_name: router-subscriber
     depends_on:
-      - "signer"
-      - "redis"
+      - rabbitmq
+      - signer
+      - redis
+    image: ghcr.io/connext/router-subscriber:$ROUTER_VERSION
+    restart: always
+    ports:
+      - "8881:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    volumes:
+      - ./config.json:/home/node/packages/agents/router/config.json
+    networks:
+      - nxtp
+
+  router-executor:
+    container_name: router-executor
+    depends_on:
+      - rabbitmq
+      - signer
+      - redis
+    image: ghcr.io/connext/router-executor:$ROUTER_VERSION
+    restart: always
+    ports:
+      - "8882:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    volumes:
+      - ./config.json:/home/node/packages/agents/router/config.json
     networks:
       - nxtp
 
   ################################################################################
-
+  # AUXILIARY SERVICES
   signer:
     container_name: signer
     image: consensys/web3signer:$WEB3SIGNER_VERSION
@@ -52,12 +95,24 @@ services:
     networks:
       - nxtp
 
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.10-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - nxtp
+
   ################################################################################
+  # MONITORING SERVICES
 
   redis:
     container_name: redis
     image: redis:$REDIS_VERSION
     restart: always
+    ports:
+      - 6379:6379
     volumes:
       - redis_data:/data
     logging:
@@ -158,7 +213,7 @@ services:
     image: grafana/grafana:$GRAFANA_VERSION
     restart: always
     ports:
-      - $GRAFANA_EXTERNAL_PORT:3000
+      - 3000:3000
     volumes:
       - ./data/grafanaConfig/grafana:/etc/grafana
       - ./data/grafanaConfig/dashboards:/etc/dashboards

@@ -1,33 +1,44 @@
 {
-  "logLevel": "debug",
-  "sequencerUrl": "https://sequencer.testnet.connext.ninja",
-  "web3SignerUrl": "http://signer:9000",
   "redis": {
     "host": "redis",
     "port": 6379
   },
-  "server": {
-    "adminToken": "abacus",
-    "port": 8080
-  },
   "chains": {
-    "1111": {
+    "1735356532": {
       "assets": [
         {
-          "address": "0xcF4d2994088a8CDE52FB584fE29608b63Ec063B2",
+          "address": "0x68Db1c8d85C09d546097C65ec7DCBFF4D6497CbF",
           "name": "TEST"
         }
       ],
-      "providers": [ "https://rinkeby.infura.io/v3/38f8f85747014e87b48035d84398a97c" ]
+      "providers": ["https://goerli.optimism.io"]
     },
-    "2221": {
-      "providers": ["https://kovan.infura.io/v3/38f8f85747014e87b48035d84398a97c"],
+    "1735353714": {
       "assets": [
         {
-          "address": "0xB5AabB55385bfBe31D627E2A717a7B189ddA4F8F",
+          "address": "0x7ea6eA49B0b0Ae9c5db7907d139D9Cd3439862a1",
+          "name": "TEST"
+        }
+      ],
+      "providers": ["https://rpc.ankr.com/eth_goerli"]
+    },
+    "9991": {
+      "providers": ["https://rpc.ankr.com/polygon_mumbai"],
+      "assets": [
+        {
+          "address": "0xeDb95D8037f769B72AAab41deeC92903A98C9E16",
           "name": "TEST"
         }
       ]
     }
-  }
+  },
+  "environment": "production",
+  "logLevel": "debug",
+  "sequencerUrl": "https://sequencer.testnet.connext.ninja",
+  "server": { "adminToken": "blahblah" },
+  "web3SignerUrl": "http://signer:9000",
+  "messageQueue": {
+    "uri": "amqp://guest:guest@rabbitmq:5672"
+  },
+  "cartographerUrl": "https://postgrest.testnet.connext.ninja"
 }

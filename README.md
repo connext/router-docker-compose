@@ -1,6 +1,6 @@
-# NXTP Router Docker Compose
+# Router Docker Compose
 
-Production-ready docker-compose for NXTP routers.
+Production-ready docker-compose for Connext routers.
 
 ## Router Setup Using docker-compose
 
@@ -15,15 +15,12 @@ Production-ready docker-compose for NXTP routers.
 
 ```
 cd ~
-git clone https://github.com/connext/nxtp-router-docker-compose.git
+git clone https://github.com/connext/router-docker-compose.git
 ```
 
 2. Rename file `.env.example` to `.env` and modify it. You need to set next environment variables:
 
-- `ROUTER_VERSION` - version to use, images found here: https://github.com/connext/nxtp/pkgs/container/nxtp-router
-- `LOGDNA_KEY` - set LogDNA Ignestion key
-- `LOGDNA_TAG` - optionally set LogDNA tag
-- `ROUTER_EXTERNAL_PORT`, `GRAFANA_EXTERNAL_PORT`
+- `ROUTER_VERSION` - version to use, images found here: https://github.com/connext/nxtp/pkgs/container/router
 
 3. (Optional) Modify `data/alertmanagerConfig/alertmanager.yml` file and set alert notifications to Slack, Discord, Telegram, Pagerduty, Opsgenie, etc. Additional configuration might be required.
 
@@ -34,11 +31,13 @@ git clone https://github.com/connext/nxtp-router-docker-compose.git
 6. Rename file `key.example.yaml` to `key.yaml` and modify it. Web3Signer yaml key file `~/nxtp-router-docker-compose/key.yaml` will be mounted into the signer container. Example file use raw unencrypted files method. See [Web3Signer docs](https://docs.web3signer.consensys.net/en/latest/HowTo/Use-Signing-Keys/).
 And for more custom commands of web3signer, edit `~/nxtp-router-docker-compose/data/signerConfig/config.yaml`. Refer [Web3Signer Command docs](https://docs.web3signer.consensys.net/en/latest/Reference/CLI/CLI-Syntax/)
 
+Note: Do not use `:latest` tag! This will not be stable as we are constantly updating! The routers Discord channel will have the latest updated version to use.
+
 
 7. Create docker-compose services, volumes and network.
 
 ```
-cd ~/nxtp-router-docker-compose
+cd ~/router-docker-compose
 docker-compose create
 ```
 
@@ -93,3 +92,8 @@ docker-compose restart
 docker-compose pull
 docker-compose up -d
 ```
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
