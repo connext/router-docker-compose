@@ -32,6 +32,10 @@ scrape_configs:
       labels:
         server: PRODUCTION
     - targets:
-      - 'router:8080'
+      - 'router-publisher:8080'
+      labels:
+        server: PRODUCTION
+    - targets:
+      - 'router-subscriber:8080'
       labels:
         server: PRODUCTION
