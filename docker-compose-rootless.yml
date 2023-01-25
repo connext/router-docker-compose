@@ -1,40 +1,68 @@
 version: "3.8"
 
 services:
-  router:
-    container_name: router
-    image: ghcr.io/connext/router:$ROUTER_VERSION
+  ################################################################################
+  # ROUTER SERVICES
+  router-publisher:
+    container_name: router-publisher
+    depends_on:
+      - rabbitmq
+      - signer
+      - redis
+    image: ghcr.io/connext/router-publisher:$ROUTER_VERSION
     restart: always
-    ports:
-      - $ROUTER_EXTERNAL_PORT:8080
-    volumes:
-      - ./config.json:/config/config.json
-    environment:
-      - NXTP_CONFIG_FILE=/config/config.json
+#    ports:
+#      - "localhost:${ROUTER_EXTERNAL_PORT}:8091" #uncomment if you want to communicate with router API from localhost
     logging:
       driver: json-file
       options:
         max-size: 10m
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    volumes:
+      - ./config.json:/home/node/packages/agents/router/config.json
     healthcheck:
-      test: netstat -ltn | grep -c 8080
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    depends_on:
-      - "signer"
-      - "redis"
+      test: netstat -ltn | grep -c 8091
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
-  ################################################################################
+  router-subscriber:
+    container_name: router-subscriber
+    depends_on:
+      - rabbitmq
+      - signer
+      - redis
+    image: ghcr.io/connext/router-subscriber:$ROUTER_VERSION
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    volumes:
+      - ./config.json:/home/node/packages/agents/router/config.json
+    healthcheck:
+      test: netstat -ltn | grep -c 8090
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - nxtp
 
+
+  ################################################################################
+  # AUXILIARY SERVICES
   signer:
     container_name: signer
     image: consensys/web3signer:$WEB3SIGNER_VERSION
     command: "--config-file=/home/node/signer/config.yaml eth1"
     restart: always
+    security_opt:
+      - apparmor:unconfined  #needed for signer to be able to read key from mounted ramfs volume
     volumes:
       - ./data/signerConfig/config.yaml:/home/node/signer/config.yaml
       - ./key.yaml:/home/node/signer/keyFiles/key.yaml
@@ -45,14 +73,24 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     healthcheck:
       test: netstat -ltn | grep -c 9000
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
-  ################################################################################
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:$RABBITMQ_VERSION
+    healthcheck:
+      test: ps aux| grep rabbitmq-server
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - nxtp
 
   redis:
     container_name: redis
@@ -67,32 +105,12 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     healthcheck:
       test: redis-cli --raw incr ping
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
-
-  ################################################################################
-
-  dcmetrics:
-    container_name: dcmetrics
-    image: "wywywywy/docker_stats_exporter:latest"
-    restart: always
-    volumes:
-      - /run/user/${USERID}/docker.sock:/var/run/docker.sock:ro
-#    ports:
-#      - 9487:9487
-    logging:
-      driver: json-file
-      options:
-        max-size: 10m
-    networks:
-      - nxtp
-
-
-  ################################################################################
 
   logdna:
     container_name: logdna
@@ -110,21 +128,22 @@ services:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
     healthcheck:
       test: netstat -ltn | grep -c 80
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
   ################################################################################
+  # MONITORING SERVICES
 
   prometheus:
     container_name: prometheus
     image: prom/prometheus:$PROMETHEUS_VERSION
     restart: always
-    ports:
-      - 9090:9090
+    # ports:
+    #   - $PROMETHEUS_EXTERNAL_PORT:9090  #uncomment this if you want/need direct Prometheus access
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.retention.time=45d
@@ -139,10 +158,10 @@ services:
         max-size: 10m
     healthcheck:
       test: netstat -ltn | grep -c 9090
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
@@ -150,8 +169,8 @@ services:
     container_name: alertmanager
     image: prom/alertmanager:$ALERTAMANGER_VERSION
     restart: always
-    ports:
-      - $ALERTMANAGER_EXTERNAL_PORT:9093
+    # ports:
+    #   - $ALERTMANAGER_EXTERNAL_PORT:9093 #uncomment this if you want/need direct Prometheus access
     command: --config.file=/config/alertmanager.yml --log.level=debug
     volumes:
       - ./data/alertmanagerConfig/alertmanager.yml:/config/alertmanager.yml
@@ -162,10 +181,10 @@ services:
         max-size: 10m
     healthcheck:
       test: netstat -ltn | grep -c 9093
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
@@ -175,6 +194,8 @@ services:
     restart: always
     ports:
       - $GRAFANA_EXTERNAL_PORT:3000
+    environment:
+      - GRAFANA_PASSWORD=$GRAFANA_PASSWORD
     volumes:
       - ./data/grafanaConfig/grafana:/etc/grafana
       - ./data/grafanaConfig/dashboards:/etc/dashboards
@@ -185,10 +206,10 @@ services:
         max-size: 10m
     healthcheck:
       test: netstat -ltn | grep -c 3000
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
@@ -204,10 +225,10 @@ services:
         max-size: 10m
     healthcheck:
       test: netstat -ltn | grep -c 3100
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
@@ -223,14 +244,15 @@ services:
         max-size: 10m
     healthcheck:
       test: exit 0
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
   ################################################################################
+  # EXPORTER SERVICES
 
   node-exporter:
     container_name: node-exporter
@@ -253,6 +275,12 @@ services:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 9100
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
@@ -262,19 +290,23 @@ services:
     restart: always
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:ro
+      - /run/user/${USERID}:/var/run
       - /etc/machine-id:/etc/machine-id:ro
-      - /run/user/${USERID}/docker.sock:/var/run/docker.sock
       - ~/.local/share/docker:/var/lib/docker:ro
       - /sys:/sys:ro
-      - /dev/disk:/dev/disk
-      - ~/.local/share/docker:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
     devices:
       - /dev/kmsg:/dev/kmsg
     logging:
       driver: json-file
       options:
         max-size: 10m
+    healthcheck:
+      test: netstat -ltn | grep -c 8080
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
     networks:
       - nxtp
 
@@ -288,3 +320,4 @@ volumes:
   grafana:
   loki:
   redis_data:
+  alertmanager:

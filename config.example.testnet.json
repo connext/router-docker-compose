@@ -1,7 +1,17 @@
-{
+{ "environment": "staging",
+  "logLevel": "debug",
+  "network": "testnet",
+  "web3SignerUrl": "http://signer:9000",
+  "messageQueue": {
+    "uri": "amqp://guest:guest@rabbitmq:5672"
+  },
   "redis": {
     "host": "redis",
     "port": 6379
+  },
+  "server": {
+    "adminToken": "asdfasdf2",
+    "port": 8080
   },
   "chains": {
     "1735356532": {
@@ -11,7 +21,7 @@
           "name": "TEST"
         }
       ],
-      "providers": ["https://goerli.optimism.io"]
+      "providers": [ "https://goerli.optimism.io" ]
     },
     "1735353714": {
       "assets": [
@@ -20,25 +30,16 @@
           "name": "TEST"
         }
       ],
-      "providers": ["https://rpc.ankr.com/eth_goerli"]
+      "providers": [ "https://rpc.ankr.com/eth_goerli" ]
     },
     "9991": {
-      "providers": ["https://rpc.ankr.com/polygon_mumbai"],
       "assets": [
         {
           "address": "0xeDb95D8037f769B72AAab41deeC92903A98C9E16",
           "name": "TEST"
         }
-      ]
+      ],
+      "providers": [ "https://rpc.ankr.com/polygon_mumbai" ]
     }
-  },
-  "environment": "production",
-  "logLevel": "debug",
-  "sequencerUrl": "https://sequencer.testnet.connext.ninja",
-  "server": { "adminToken": "blahblah" },
-  "web3SignerUrl": "http://signer:9000",
-  "messageQueue": {
-    "uri": "amqp://guest:guest@rabbitmq:5672"
-  },
-  "cartographerUrl": "https://postgrest.testnet.connext.ninja"
+  }
 }

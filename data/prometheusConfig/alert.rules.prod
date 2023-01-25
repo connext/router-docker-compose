@@ -3,71 +3,116 @@ groups:
 - name: prod_containers
   rules:
 
-###
-
-  - alert: prod_router_down
-    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="router",server="PRODUCTION"})
-    for: 10s
+###################################
+# ROUTER SERVICES
+  - alert: prod_router_publisher_down
+    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="router-publisher",server="PRODUCTION"})
+    for: 1m
     labels:
       severity: critical
     annotations:
-      summary: "{{$labels.server}}: Router down"
-      description: "Router container is down for more than 10 seconds."
+      summary: "{{$labels.server}}: Router publisher is down"
+      description: "Router publisher container is down for more than 1 minute"
 
-###
+  - alert: prod_router_subscriber_down
+    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="router-subscriber",server="PRODUCTION"})
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{$labels.server}}: Router subscriber is down"
+      description: "Router subscriber container is down for more than 1 minute"
+
+###################################
+# AUXILIARY SERVICES
+  - alert: prod_signer_down
+    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="signer",server="PRODUCTION"})
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{$labels.server}}: Signer is down"
+      description: "Signer container is down for more than 1 minute"
+
+  - alert: prod_rabbitmq_down
+    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="rabbitmq",server="PRODUCTION"})
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{$labels.server}}: RabbitMQ is down"
+      description: "RabbitMQ container is down for more than 1 minute"
+
+  - alert: prod_redis_down
+    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="redis",server="PRODUCTION"})
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{$labels.server}}: Redis is down"
+      description: "Redis container is down for more than 1 minute"
 
   - alert: prod_logdna_down
     expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="logdna",server="PRODUCTION"})
-    for: 10s
+    for: 1m
     labels:
       severity: critical
     annotations:
-      summary: "{{$labels.server}}: LogDNA down"
-      description: "LogDNA container is down for more than 10 seconds."
+      summary: "{{$labels.server}}: LogDNA is down"
+      description: "LogDNA container is down for more than 1 minute"
 
-###
-
-  - alert: prod_prometheus_prometheus_down
-    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="prometheus",server="PRODUCTION"})
-    for: 10s
-    labels:
-      severity: critical
-    annotations:
-      summary: "{{$labels.server}}: Prometheus down"
-      description: "Prometheus container is down for more than 10 seconds."
-
-  - alert: prod_prometheus_grafana_down
+###################################
+# MONITORING SERVICES AND EXPORTERS
+  - alert: prod_grafana_down
     expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="grafana",server="PRODUCTION"})
-    for: 10s
+    for: 1m
     labels:
       severity: critical
     annotations:
-      summary: "{{$labels.server}}: Grafana down"
-      description: "Grafana container is down for more than 10 seconds."
+      summary: "{{$labels.server}}: Grafana is down"
+      description: "Grafana container is down for more than 1 minute"
 
   - alert: prod_prometheus_alertmanager_down
     expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="alertmanager",server="PRODUCTION"})
-    for: 10s
+    for: 1m
     labels:
       severity: critical
     annotations:
-      summary: "{{$labels.server}}: Alertmanager down"
-      description: "Alertmanager container is down for more than 10 seconds."
+      summary: "{{$labels.server}}: Alertmanager is down"
+      description: "Alertmanager container is down for more than 1 minute"
 
-  - alert: prod_prometheus_cadvisor_down
+  - alert: prod_loki_down
+    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="loki",server="PRODUCTION"})
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{$labels.server}}: Loki is down"
+      description: "Loki container is down for more than 1 minute"
+
+  - alert: prod_promtail_down
+    expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="promtail",server="PRODUCTION"})
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "{{$labels.server}}: Promtail is down"
+      description: "Promtail container is down for more than 1 minute"
+
+  - alert: prod_cadvisor_down
     expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="cadvisor",server="PRODUCTION"})
-    for: 10s
+    for: 1m
     labels:
       severity: critical
     annotations:
-      summary: "{{$labels.server}}: Cadvisor down"
-      description: "Cadvisor container is down for more than 10 seconds."
+      summary: "{{$labels.server}}: Cadvisor is down"
+      description: "Cadvisor container is down for more than 1 minute"
 
-  - alert: prod_prometheus_node_exporter_down
+  - alert: prod_node_exporter_down
     expr: absent(container_memory_usage_bytes{container_label_com_docker_compose_service="node-exporter",server="PRODUCTION"})
-    for: 10s
+    for: 1m
     labels:
       severity: critical
     annotations:
-      summary: "{{$labels.server}}: Node Exporter down"
-      description: "Node Exporter container is down for more than 10 seconds."
+      summary: "{{$labels.server}}: Node Exporter is down"
+      description: "Node Exporter container is down for more than 1 minute"
