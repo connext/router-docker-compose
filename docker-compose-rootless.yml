@@ -53,6 +53,7 @@ services:
     networks:
       - nxtp
 
+
   ################################################################################
   # AUXILIARY SERVICES
   signer:
@@ -60,6 +61,8 @@ services:
     image: consensys/web3signer:$WEB3SIGNER_VERSION
     command: "--config-file=/home/node/signer/config.yaml eth1"
     restart: always
+    security_opt:
+      - apparmor:unconfined  #needed for signer to be able to read key from mounted ramfs volume
     volumes:
       - ./data/signerConfig/config.yaml:/home/node/signer/config.yaml
       - ./key.yaml:/home/node/signer/keyFiles/key.yaml
@@ -117,7 +120,7 @@ services:
       LOGDNA_KEY: $LOGDNA_KEY
       TAGS: $LOGDNA_TAG
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/user/${USERID}/docker.sock:/var/run/docker.sock
     logging:
       driver: json-file
       options:
@@ -139,7 +142,7 @@ services:
     container_name: prometheus
     image: prom/prometheus:$PROMETHEUS_VERSION
     restart: always
-    #ports:
+    # ports:
     #   - $PROMETHEUS_EXTERNAL_PORT:9090  #uncomment this if you want/need direct Prometheus access
     command:
       - --config.file=/etc/prometheus/prometheus.yml
@@ -185,7 +188,6 @@ services:
     networks:
       - nxtp
 
-
   grafana:
     container_name: grafana
     image: grafana/grafana:$GRAFANA_VERSION
@@ -212,7 +214,6 @@ services:
       - nxtp
 
   loki:
-    container_name: loki
     image: grafana/loki:$LOKI_VERSION
     command: -config.file=/etc/loki/config.yml
     volumes:
@@ -232,11 +233,10 @@ services:
       - nxtp
 
   promtail:
-    container_name: promtail
     image: grafana/promtail:$PROMTAIL_VERSION
     volumes:
-      - /var/lib/docker/containers:/var/lib/docker/containers
-      - ./data/promtailConfig/config.yml:/etc/promtail/promtail.yml
+      - ~/.local/share/docker/containers:/var/lib/docker/containers
+      - ./data/promtailConfig/config-rootless.yml:/etc/promtail/promtail.yml
     command: -config.file=/etc/promtail/promtail.yml
     logging:
       driver: json-file
@@ -263,13 +263,14 @@ services:
       - --path.sysfs=/host/sys
       - --path.rootfs=/rootfs
       - --collector.filesystem.ignored-mount-points
-      - ^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns)(/)
+      - ^/(sys|proc|dev|host|etc|userfs/.local/share/docker/containers|userfs/.local/share/docker/overlay2|rootfs/run/user/${USERID}/docker/netns)(/)
     cap_add:
       - SYS_TIME
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
+      - ~:/userfs:ro
     logging:
       driver: json-file
       options:
@@ -289,10 +290,11 @@ services:
     restart: always
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:ro
+      - /run/user/${USERID}:/var/run
+      - /etc/machine-id:/etc/machine-id:ro
+      - ~/.local/share/docker:/var/lib/docker:ro
       - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
+      - /dev/disk:/dev/disk:ro
     devices:
       - /dev/kmsg:/dev/kmsg
     logging:

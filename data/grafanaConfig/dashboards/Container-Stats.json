@@ -2143,7 +2143,7 @@
         "hide": 0,
         "includeAll": false,
         "multi": false,
-        "name": "server",
+        "name": "datasource",
         "options": [],
         "query": {
           "query": "label_values(node_exporter_build_info,instance)",
@@ -2264,7 +2264,14 @@
           "type": "prometheus",
           "uid": "PBFA97CFB590B2093"
         },
-        "filters": [],
+        "filters": [
+          {
+            "condition": "",
+            "key": "server",
+            "operator": "=",
+            "value": "router"
+          }
+        ],
         "hide": 1,
         "label": "",
         "name": "Filters",
@@ -2274,7 +2281,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
