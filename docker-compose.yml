@@ -27,7 +27,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   router-subscriber:
     container_name: router-subscriber
@@ -51,7 +51,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   ################################################################################
   # AUXILIARY SERVICES
@@ -75,7 +75,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   rabbitmq:
     container_name: rabbitmq
@@ -87,7 +87,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   redis:
     container_name: redis
@@ -107,7 +107,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   logdna:
     container_name: logdna
@@ -130,7 +130,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   ################################################################################
   # MONITORING SERVICES
@@ -160,7 +160,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   alertmanager:
     container_name: alertmanager
@@ -183,7 +183,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
 
   grafana:
@@ -209,7 +209,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   loki:
     container_name: loki
@@ -229,7 +229,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   promtail:
     container_name: promtail
@@ -249,7 +249,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   ################################################################################
   # EXPORTER SERVICES
@@ -281,7 +281,7 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
   cadvisor:
     container_name: cadvisor
@@ -306,12 +306,12 @@ services:
       retries: 5
       start_period: 5s
     networks:
-      - nxtp
+      - connext
 
 ################################################################################
 
 networks:
-  nxtp:
+  connext:
 
 volumes:
   prometheus:
