@@ -19,24 +19,10 @@ scrape_configs:
   static_configs:
     - targets:
       - 'prometheus:9090'
-      labels:
-        server: PRODUCTION
       - 'alertmanager:9093'
-      labels:
-        server: PRODUCTION
-    - targets:
       - 'cadvisor:8080'
-      labels:
-        server: PRODUCTION
-    - targets:
       - 'node-exporter:9100'
-      labels:
-        server: PRODUCTION
-    - targets:
       - 'router-publisher:8091'
-      labels:
-        server: PRODUCTION
-    - targets:
       - 'router-subscriber:8090'
       labels:
         server: PRODUCTION

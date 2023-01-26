@@ -2269,7 +2269,7 @@
             "condition": "",
             "key": "server",
             "operator": "=",
-            "value": "router"
+            "value": "PRODUCTION"
           }
         ],
         "hide": 1,
