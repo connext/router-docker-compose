@@ -1,0 +1,52 @@
+groups:
+
+- name: routers
+  rules:
+######################################################################
+# Liquidity alerts
+  - alert: exporter_liquidity_USDC
+    expr: connext_router_liquidity{server="exporter",asset=~".*USDC$"} < 10000
+    for: 3h
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.server}}: USDC is low on {{$labels.domain}}"
+      description: "USDC liquidity is low for a long time"
+
+  - alert: exporter_liquidity_WETH
+    expr: connext_router_liquidity{server="exporter",asset=~".*WETH$"} < 1
+    for: 3h
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.server}}: WETH is low on {{$labels.domain}}"
+      description: "WETH liquidity is low for a long time"
+##########
+# Transfers alerts
+  - alert: exporter_transfers_xcalled
+    expr: connext_transfers{server="exporter",status="XCalled"} > 5
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.server}}: {{$labels.status}} transfers count is too big"
+      description: "{{$labels.status}} transfers count is too big"
+
+  - alert: exporter_transfers_executed
+    expr: connext_transfers{server="exporter",status="Executed"} > 50
+    for: 2h
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.server}}: {{$labels.status}} transfers count is too big"
+      description: "{{$labels.status}} transfers count is too big"
+
+  - alert: exporter_transfers_reconcilled
+    expr: connext_transfers{server="exporter",status="Reconciled"} > 5
+    for: 15m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.server}}: {{$labels.status}} transfers count is too big"
+      description: "{{$labels.status}} transfers count is too big"
+##########
