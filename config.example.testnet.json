@@ -15,30 +15,12 @@
   },
   "chains": {
     "1735356532": {
-      "assets": [
-        {
-          "address": "0x68Db1c8d85C09d546097C65ec7DCBFF4D6497CbF",
-          "name": "TEST"
-        }
-      ],
       "providers": [ "https://goerli.optimism.io" ]
     },
     "1735353714": {
-      "assets": [
-        {
-          "address": "0x7ea6eA49B0b0Ae9c5db7907d139D9Cd3439862a1",
-          "name": "TEST"
-        }
-      ],
       "providers": [ "https://rpc.ankr.com/eth_goerli" ]
     },
     "9991": {
-      "assets": [
-        {
-          "address": "0xeDb95D8037f769B72AAab41deeC92903A98C9E16",
-          "name": "TEST"
-        }
-      ],
       "providers": [ "https://rpc.ankr.com/polygon_mumbai" ]
     }
   }
