@@ -1,4 +1,5 @@
-{ "environment": "production",
+{ 
+  "environment": "production",
   "logLevel": "debug",
   "network": "mainnet",
   "web3SignerUrl": "http://signer:9000",
@@ -15,57 +16,21 @@
   },
   "chains": {
     "6648936": {
-      "assets": [
-        {
-          "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-          "name": "USDC"
-        }
-      ],
       "providers": [ "https://rpc.ankr.com/eth" ]
     },
     "1634886255": {
-      "assets": [
-        {
-          "address": "0x8c556cF37faa0eeDAC7aE665f1Bb0FbD4b2eae36",
-          "name": "nextUSDC"
-        }
-      ],
       "providers": [ "https://rpc.ankr.com/arbitrum" ]
     },
     "1869640809": {
-      "assets": [
-        {
-          "address": "0x67E51f46e8e14D4E4cab9dF48c59ad8F512486DD",
-          "name": "nextUSDC"
-        }
-      ],
       "providers": [ "https://rpc.ankr.com/optimism" ]
     },
     "1886350457": {
-      "assets": [
-        {
-          "address": "0xF96C6d2537e1af1a9503852eB2A4AF264272a5B6",
-          "name": "nextUSDC"
-        }
-      ],
       "providers": [ "https://rpc.ankr.com/polygon" ]
     },
     "6450786": {
-      "assets": [
-        {
-          "address": "0x5e7D83dA751F4C9694b13aF351B30aC108f32C38",
-          "name": "nextUSDC"
-        }
-      ],
       "providers": [ "https://bsc-dataseed.binance.org/" ]
     },
     "6778479": {
-      "assets": [
-        {
-          "address": "0x44CF74238d840a5fEBB0eAa089D05b763B73faB8",
-          "name": "nextUSDC"
-        }
-      ],
       "providers": [ "https://rpc.gnosischain.com", "https://rpc.ankr.com/gnosis" ]
     }
   }
