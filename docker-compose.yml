@@ -11,6 +11,8 @@ services:
       - redis
     image: ghcr.io/connext/router-publisher:$ROUTER_VERSION
     restart: always
+    environment:
+      GRAPH_API_KEY: $GRAPH_API_KEY
 #    ports:
 #      - "localhost:${ROUTER_EXTERNAL_PORT}:8091" #uncomment if you want to communicate with router API from localhost
     logging:
@@ -37,6 +39,8 @@ services:
       - redis
     image: ghcr.io/connext/router-subscriber:$ROUTER_VERSION
     restart: always
+    environment:
+      GRAPH_API_KEY: $GRAPH_API_KEY
     logging:
       driver: json-file
       options:
